@@ -1,0 +1,37 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "a REST Backend for a ticket management system named \"Quick Fix\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dev-sathya17/QuickFix-backend.git"
+  },
+  "author": "Sathyanarayanan.V",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dev-sathya17/QuickFix-backend/issues"
+  },
+  "homepage": "https://github.com/dev-sathya17/QuickFix-backend#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.20.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.6.1",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.15"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
