@@ -56,6 +56,10 @@ const ticketController = {
       ticket.status = status || ticket.status;
       ticket.assignedTo = assignedTo || ticket.assignedTo;
 
+      if (status === "closed") {
+        ticket.closedAt = new Date();
+      }
+
       if (assignedTo) {
         const subject = "Ticket Assignment";
         const assignedUser = await User.findById(assignedTo);

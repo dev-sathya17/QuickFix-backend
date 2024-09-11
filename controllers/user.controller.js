@@ -4,9 +4,6 @@ const bcrypt = require("bcrypt");
 // Importing the User model
 const User = require("../models/user");
 
-// Importing the tickets model
-const Ticket = require("../models/ticket");
-
 // Importing helper function to send email
 const sendEmail = require("../helpers/emailHelper");
 

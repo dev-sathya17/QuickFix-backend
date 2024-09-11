@@ -39,6 +39,10 @@ const ticketSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
+  closedAt: {
+    type: Date,
+    default: null,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

@@ -12,6 +12,7 @@ const userRouter = require("./routes/user.route");
 const categoryRouter = require("./routes/category.route");
 const ticketRouter = require("./routes/ticket.route");
 const commentRouter = require("./routes/comment.route");
+const adminRouter = require("./routes/admin.route");
 
 // Creating an express application
 const app = express();
@@ -30,5 +31,6 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/tickets", ticketRouter);
 app.use("/api/v1/comments", commentRouter);
+app.use("/api/v1/admin", adminRouter);
 
 module.exports = app;
