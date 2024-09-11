@@ -9,6 +9,7 @@ const cookieParser = require("cookie-parser");
 
 // Router Imports
 const userRouter = require("./routes/user.route");
+const categoryRouter = require("./routes/category.route");
 
 // Creating an express application
 const app = express();
@@ -24,5 +25,6 @@ app.use(morgan("dev"));
 
 // Creating routes
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/categories", categoryRouter);
 
 module.exports = app;
