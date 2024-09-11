@@ -4,6 +4,9 @@ const bcrypt = require("bcrypt");
 // Importing the User model
 const User = require("../models/user");
 
+// Importing the tickets model
+const Ticket = require("../models/ticket");
+
 // Importing helper function to send email
 const sendEmail = require("../helpers/emailHelper");
 
@@ -13,6 +16,9 @@ const jwt = require("jsonwebtoken");
 // Importing the EMAIL_ID from the configuration file
 const { SECRET_KEY } = require("../utils/config");
 const generateOtp = require("../helpers/userHelper");
+
+const fs = require("fs");
+const path = require("path");
 
 const userController = {
   // API for registering users
@@ -589,6 +595,10 @@ const userController = {
         return res.status(404).json({ message: "User not found" });
       }
 
+      if (user.image) {
+        fs.unlinkSync(path.join(__dirname, "..", user.image));
+      }
+
       const currentUser = User.findById(req.userId);
 
       if (currentUser.role !== "admin") {
@@ -623,6 +633,25 @@ const userController = {
         // Sending an error response
         return res.status(401).json({ message: "Invalid token" });
       }
+    } catch (error) {
+      // Sending an error response
+      res.status(500).json({ message: error.message });
+    }
+  },
+
+  // API to view user tickets
+  getTickets: async (req, res) => {
+    try {
+      // Getting user id from request parameters
+      const user = await User.findById(req.userId).populate("tickets");
+
+      // If user not found, return error response
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      // If user found, return the user's tickets
+      res.json({ tickets: user.tickets });
     } catch (error) {
       // Sending an error response
       res.status(500).json({ message: error.message });

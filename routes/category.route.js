@@ -2,15 +2,15 @@
 const express = require("express");
 
 // Importing the category Controller
+const categoryController = require("../controllers/category.controller");
 
 // Importing the authentication middleware
 const auth = require("../middlewares/auth");
-const categoryController = require("../controllers/category.controller");
 
 // Creating a router
 const categoryRouter = express.Router();
 
-// Route to register a user
+// Route to add a category
 categoryRouter.post(
   "/",
   auth.authenticate,
@@ -18,7 +18,7 @@ categoryRouter.post(
   categoryController.addCategory
 );
 
-// Route to check authentication
+// Route to get all categories
 categoryRouter.get(
   "/",
   auth.authenticate,
@@ -26,7 +26,7 @@ categoryRouter.get(
   categoryController.getAllCategories
 );
 
-// Route for deleting user
+// Route for deleting categories
 categoryRouter.delete(
   "/:id",
   auth.authenticate,

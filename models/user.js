@@ -32,6 +32,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  tickets: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Ticket",
+    },
+  ],
 });
 
 // Exporting the User model for use in other parts of the application

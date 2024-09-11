@@ -52,5 +52,8 @@ userRouter.delete(
   userController.deleteProfile
 );
 
+// Route for fetching user tickets
+userRouter.get("/tickets", auth.authenticate, userController.getTickets);
+
 // Exporting the router
 module.exports = userRouter;
