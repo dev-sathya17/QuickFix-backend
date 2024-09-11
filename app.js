@@ -11,6 +11,7 @@ const cookieParser = require("cookie-parser");
 const userRouter = require("./routes/user.route");
 const categoryRouter = require("./routes/category.route");
 const ticketRouter = require("./routes/ticket.route");
+const commentRouter = require("./routes/comment.route");
 
 // Creating an express application
 const app = express();
@@ -28,5 +29,6 @@ app.use(morgan("dev"));
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/tickets", ticketRouter);
+app.use("/api/v1/comments", commentRouter);
 
 module.exports = app;
