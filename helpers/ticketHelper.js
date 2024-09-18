@@ -45,7 +45,6 @@ const assignEmployeeToTicket = async () => {
       }).populate("owner");
 
       const subject = "Ticket Assignment";
-      // TODO: Modify url after frontend deployment
       const text = `<!DOCTYPE html>
       <html lang="en">
       <head>
@@ -108,7 +107,7 @@ const assignEmployeeToTicket = async () => {
                   <p><strong>Assigned To:</strong> ${randomEmployee.name}</p>
                   <p><strong>New Status:</strong> ${updatedTicket.status}</p>
                   <p><strong>Details:</strong> ${updatedTicket.description}</p>
-                  <p>You can view and manage your ticket by logging into your account at <a href="{{appUrl}}">QuickFix</a>.</p>
+                  <p>You can view and manage your ticket by logging into your account at <a href="https://quick-fix-tickets.netlify.app/">QuickFix</a>.</p>
                   <p>Thank you for using QuickFix!</p>
               </div>
               <div class="footer">
@@ -120,7 +119,6 @@ const assignEmployeeToTicket = async () => {
       `;
       sendEmail(ticket.owner.email, subject, text);
 
-      // TODO: Modify url after frontend deployment
       const message = `<!DOCTYPE html>
           <html lang="en">
           <head>
@@ -186,7 +184,7 @@ const assignEmployeeToTicket = async () => {
                       <p><strong>Ticket ID:</strong> ${updatedTicket._id}</p>
                       <p><strong>Ticket Title:</strong> ${updatedTicket.title}</p>
                       <p><strong>Description:</strong> ${updatedTicket.description}</p>
-                      <p>You can view and start working on the ticket by logging into your account: <a href="{{appUrl}}">QuickFix Dashboard</a>.</p>
+                      <p>You can view and start working on the ticket by logging into your account: <a href="https://quick-fix-tickets.netlify.app/">QuickFix Dashboard</a>.</p>
                       <p>Thank you for your attention and timely efforts!</p>
                   </div>
                   <div class="footer">

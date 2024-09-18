@@ -93,7 +93,6 @@ const ticketController = {
 
         ticket.status = "assigned";
 
-        // TODO: Modify url after frontend deployment
         const text = `<!DOCTYPE html>
                 <html lang="en">
                 <head>
@@ -156,7 +155,7 @@ const ticketController = {
                             <p><strong>Assigned To:</strong> ${assignedUser.name}</p>
                             <p><strong>New Status:</strong> ${ticket.status}</p>
                             <p><strong>Details:</strong> ${ticket.description}</p>
-                            <p>You can view and manage your ticket by logging into your account at <a href="{{appUrl}}">QuickFix</a>.</p>
+                            <p>You can view and manage your ticket by logging into your account at <a href="https://quick-fix-tickets.netlify.app/">QuickFix</a>.</p>
                             <p>Thank you for using QuickFix!</p>
                         </div>
                         <div class="footer">
@@ -168,7 +167,6 @@ const ticketController = {
                 `;
         sendEmail(user.email, subject, text);
 
-        // TODO: Modify url after frontend deployment
         const message = `<!DOCTYPE html>
                     <html lang="en">
                     <head>
@@ -234,11 +232,10 @@ const ticketController = {
                                 <p><strong>Ticket ID:</strong> ${ticket._id}</p>
                                 <p><strong>Ticket Title:</strong> ${ticket.title}</p>
                                 <p><strong>Description:</strong> ${ticket.description}</p>
-                                <p>You can view and start working on the ticket by logging into your account: <a href="{{appUrl}}">QuickFix Dashboard</a>.</p>
+                                <p>You can view and start working on the ticket by logging into your account: <a href="https://quick-fix-tickets.netlify.app/">QuickFix Dashboard</a>.</p>
                                 <p>Thank you for your attention and timely efforts!</p>
                             </div>
                             <div class="footer">
-                                <p>If you have any questions, feel free to <a href="{{supportUrl}}">contact support</a>.</p>
                                 <p>© {{currentYear}} QuickFix. All rights reserved.</p>
                             </div>
                         </div>
@@ -251,7 +248,6 @@ const ticketController = {
       if (status) {
         const subject = "Status Updated for ticket";
 
-        // TODO: Modify url after frontend deployment
         const text = `<!DOCTYPE html>
                 <html lang="en">
                 <head>
@@ -313,7 +309,7 @@ const ticketController = {
                             <p><strong>Ticket ID:</strong> ${ticket._id}</p>
                             <p><strong>New Status:</strong> ${status}</p>
                             <p><strong>Details:</strong> ${ticket.description}</p>
-                            <p>You can view and manage your ticket by logging into your account at <a href="{{appUrl}}">QuickFix</a>.</p>
+                            <p>You can view and manage your ticket by logging into your account at <a href="https://quick-fix-tickets.netlify.app/">QuickFix</a>.</p>
                             <p>Thank you for using QuickFix!</p>
                         </div>
                         <div class="footer">

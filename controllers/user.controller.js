@@ -160,8 +160,7 @@ const userController = {
                     </div>
 
                     <p style="text-align: center;">
-                        // TODO: Replace with Deployed frontend URL
-                        <a href="https://quickfixapp.com/login" class="cta-button">Log In to QuickFix</a>
+                        <a href="https://quick-fix-tickets.netlify.app/" class="cta-button">Log In to QuickFix</a>
                     </p>
 
                     <p>Looking forward to great teamwork!</p>
@@ -272,8 +271,7 @@ const userController = {
                             </p>
 
                             <p style="text-align: center;">
-                                // TODO: Change this URL to deployed frontend URL
-                                <a href="https://quickfixapp.com/login" class="cta-button">Log In to QuickFix</a>
+                                <a href="https://quick-fix-tickets.netlify.app/" class="cta-button">Log In to QuickFix</a>
                             </p>
 
                             <p>
