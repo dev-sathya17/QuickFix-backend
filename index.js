@@ -2,6 +2,23 @@
 const mongoose = require("mongoose");
 const { MONGODB_URI, PORT } = require("./utils/config");
 const app = require("./app");
+const http = require("http");
+const socketIo = require("socket.io");
+const socketHandler = require("./socket/socket.handler");
+
+const server = http.createServer(app);
+
+const io = socketIo(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: "http://localhost:5173", // Update this to match your frontend URL
+    credentials: true,
+  },
+});
+
+socketHandler(io);
+
+app.set("io", io);
 
 // Connecting to MongoDB and starting the server
 mongoose
@@ -10,7 +27,7 @@ mongoose
     console.log("Connected to MongoDB");
 
     // Running server
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
   })

@@ -38,7 +38,7 @@ const adminController = {
       const tickets = await Ticket.find();
       const openTickets = tickets.filter((ticket) => ticket.status === "open");
       const assignedTickets = tickets.filter(
-        (ticket) => ticket.status === "in progress"
+        (ticket) => ticket.status === "assigned"
       );
       const closedTickets = tickets.filter(
         (ticket) => ticket.status === "closed"
@@ -50,6 +50,55 @@ const adminController = {
       });
     } catch (error) {
       res.status(500).json({ error: error.message });
+    }
+  },
+  getUnassignedEmployees: async (req, res) => {
+    try {
+      const users = await User.find({ role: "employee" });
+      const tickets = await Ticket.find();
+
+      const assignedEmployees = tickets.map((ticket) => {
+        if (ticket.assignedTo !== null) {
+          return ticket.assignedTo.toString();
+        }
+      });
+
+      const unassignedEmployees = users.filter(
+        (user) => !assignedEmployees.includes(user._id.toString())
+      );
+
+      res.json(unassignedEmployees);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: error.message });
+    }
+  },
+  getTicketsCompletion: async (req, res) => {
+    try {
+      // Find tickets where closedAt is not null
+      const completedTickets = await Ticket.find({
+        closedAt: { $exists: true, $ne: null },
+      });
+
+      // Create a map to store counts by formatted date
+      const countsByDate = {};
+
+      completedTickets.forEach((ticket) => {
+        const formattedDate = new Date(ticket.closedAt)
+          .toISOString()
+          .split("T")[0]
+          .replace(/-/g, "/");
+
+        if (countsByDate[formattedDate]) {
+          countsByDate[formattedDate]++;
+        } else {
+          countsByDate[formattedDate] = 1;
+        }
+      });
+
+      res.json(countsByDate);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
   },
 };

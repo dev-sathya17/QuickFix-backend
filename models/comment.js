@@ -17,6 +17,10 @@ const commentSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  ticket: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Ticket",
+  },
 });
 
 module.exports = mongoose.model("Comment", commentSchema, "comments");

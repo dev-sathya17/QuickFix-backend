@@ -19,6 +19,9 @@ userRouter.post("/register", userController.register);
 // Route to login a user
 userRouter.post("/login", userController.login);
 
+// Route for o-auth login a user
+userRouter.post("/login/oauth", userController.googleSignIn);
+
 // Route to check authentication
 userRouter.get("/check-auth", userController.checkAuthentication);
 

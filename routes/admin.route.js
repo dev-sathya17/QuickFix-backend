@@ -1,7 +1,7 @@
 // Importing the express library
 const express = require("express");
 
-// Importing the category Controller
+// Importing the admin Controller
 const adminController = require("../controllers/admin.controller");
 
 // Importing the authentication middleware
@@ -10,7 +10,7 @@ const auth = require("../middlewares/auth");
 // Creating a router
 const adminRouter = express.Router();
 
-// Route to add a category
+// Route to get all employees
 adminRouter.get(
   "/employees",
   auth.authenticate,
@@ -18,7 +18,7 @@ adminRouter.get(
   adminController.getAllEmployees
 );
 
-// Route to get all categories
+// Route to get all users
 adminRouter.get(
   "/users",
   auth.authenticate,
@@ -26,7 +26,7 @@ adminRouter.get(
   adminController.getAllUsers
 );
 
-// Route for deleting categories
+// Route to get tickets by status
 adminRouter.get(
   "/tickets/count",
   auth.authenticate,
@@ -39,6 +39,20 @@ adminRouter.get(
   auth.authenticate,
   auth.authorize,
   adminController.getUserCount
+);
+
+adminRouter.get(
+  "/employees/unassigned",
+  auth.authenticate,
+  auth.authorize,
+  adminController.getUnassignedEmployees
+);
+
+adminRouter.get(
+  "/tickets/completion",
+  auth.authenticate,
+  auth.authorize,
+  adminController.getTicketsCompletion
 );
 
 // Exporting the router

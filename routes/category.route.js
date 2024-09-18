@@ -19,12 +19,7 @@ categoryRouter.post(
 );
 
 // Route to get all categories
-categoryRouter.get(
-  "/",
-  auth.authenticate,
-  auth.authorize,
-  categoryController.getAllCategories
-);
+categoryRouter.get("/", auth.authenticate, categoryController.getAllCategories);
 
 // Route for deleting categories
 categoryRouter.delete(

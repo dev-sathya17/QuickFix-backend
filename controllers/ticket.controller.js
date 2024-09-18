@@ -3,6 +3,7 @@ const Ticket = require("../models/ticket");
 const User = require("../models/user");
 const fs = require("fs");
 const path = require("path");
+const mime = require("mime");
 
 const ticketController = {
   addTicket: async (req, res) => {
@@ -24,7 +25,14 @@ const ticketController = {
       user.tickets.push(newTicket._id);
       await user.save();
 
-      res.status(201).json(newTicket);
+      const ticket = await Ticket.findById(newTicket._id)
+        .populate("owner")
+        .populate("assignedTo")
+        .populate("comments");
+
+      req.app.get("io").emit("ticket added", ticket);
+
+      res.status(201).json({ ticket, message: "Ticket added successfully" });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -34,8 +42,22 @@ const ticketController = {
       const tickets = await Ticket.find()
         .populate("owner")
         .populate("assignedTo")
-        .populate("category");
+        .populate("category")
+        .populate("comments");
       res.json(tickets);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+  getTicket: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const ticket = await Ticket.findById(id)
+        .populate("owner")
+        .populate("assignedTo")
+        .populate("category")
+        .populate("comments");
+      res.json(ticket);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -46,7 +68,7 @@ const ticketController = {
       const { id } = req.params;
       const ticket = await Ticket.findById(id);
 
-      const user = await User.findById(req.userId);
+      const user = await User.findById(ticket.owner);
 
       if (!ticket) return res.status(404).json({ message: "Ticket not found" });
 
@@ -307,7 +329,14 @@ const ticketController = {
 
       await ticket.save();
 
-      res.json(ticket);
+      const updatedTicket = await Ticket.findById(ticket._id)
+        .populate("owner")
+        .populate("assignedTo")
+        .populate("comments");
+
+      req.app.get("io").emit("ticket updated", updatedTicket);
+
+      res.json({ ticket, message: "Ticket updated successfully" });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -328,10 +357,57 @@ const ticketController = {
         });
       }
 
+      req.app.get("io").emit("ticket deleted", ticket._id);
+
       res.json({ message: "Ticket deleted successfully" });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
+  },
+  getEmployeeTickets: async (req, res) => {
+    try {
+      console.log(req.userId);
+      const tickets = await Ticket.find({
+        assignedTo: req.userId,
+      })
+        .populate("owner")
+        .populate("assignedTo")
+        .populate("category")
+        .populate("comments");
+      res.json(tickets);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+  getUserTickets: async (req, res) => {
+    try {
+      const tickets = await Ticket.find({
+        owner: req.userId,
+      })
+        .populate("owner")
+        .populate("assignedTo")
+        .populate("category")
+        .populate("comments");
+      res.json(tickets);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+  downloadAttachment: (req, res) => {
+    const filename = req.params.filename;
+
+    const filePath = path.join(__dirname, "../uploads", filename);
+
+    const contentType = mime.getType(filePath);
+
+    res.setHeader("Content-Type", contentType || "application/octet-stream");
+
+    res.download(filePath, filename, (err) => {
+      if (err) {
+        console.error("Error downloading file:", err);
+        res.status(500).send("Could not download the file.");
+      }
+    });
   },
 };
 

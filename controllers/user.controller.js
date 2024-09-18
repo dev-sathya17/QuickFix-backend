@@ -341,6 +341,15 @@ const userController = {
         path: "/",
       });
 
+      // Setting user role as cookie
+      res.cookie("role", user.role, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        expires: new Date(Date.now() + 24 * 3600000), // 24 hours from login
+        path: "/",
+      });
+
       // sending a success response
       res.status(200).json({
         message: "Login successful",
@@ -349,6 +358,54 @@ const userController = {
     } catch (error) {
       // sending an error response
       res.status(500).send({ message: error.message });
+    }
+  },
+
+  googleSignIn: async (req, res, next) => {
+    try {
+      const user = await User.findOne({ email: req.body.email });
+      console.log(user);
+      if (user) {
+        const token = jwt.sign({ id: user._id }, SECRET_KEY);
+        const { password: pass, ...data } = user._doc;
+        res
+          .cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            expires: new Date(Date.now() + 24 * 3600000), // 24 hours from login
+            path: "/",
+          })
+          .status(200)
+          .json(data);
+      } else {
+        const generatedPassword = Math.random().toString(36).slice(-8);
+        const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
+        const newUser = new User({
+          username:
+            req.body.name.split(" ").join("").toLowerCase() +
+            Math.random().toString(36).slice(-4),
+          email: req.body.email,
+          password: hashedPassword,
+          avatar: req.body.photo,
+        });
+        await newUser.save();
+        const token = jwt.sign({ id: newUser._id }, SECRET_KEY);
+        const { password: pass, ...data } = newUser._doc;
+        res
+          .cookie("token", token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            expires: new Date(Date.now() + 24 * 3600000), // 24 hours from login
+            path: "/",
+          })
+          .status(200)
+          .json(data);
+      }
+    } catch (error) {
+      console.log(error.message);
+      next(error);
     }
   },
 
@@ -363,6 +420,12 @@ const userController = {
 
       // clearing the cookie
       res.clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        path: "/",
+      });
+      res.clearCookie("role", {
         httpOnly: true,
         secure: true,
         sameSite: "none",
@@ -592,15 +655,14 @@ const userController = {
         return res.status(404).json({ message: "User not found" });
       }
 
-      if (user.image) {
+      if (user.image && user.image !== "uploads/avatar.png") {
         fs.unlinkSync(path.join(__dirname, "..", user.image));
       }
-
-      const currentUser = User.findById(req.userId);
+      const currentUser = await User.findById(req.userId);
 
       if (currentUser.role !== "admin") {
-        // Removing the user cookie
         res.clearCookie("token");
+        res.clearCookie("role");
       }
 
       // returning success response, if user is deleted

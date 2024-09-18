@@ -94,9 +94,12 @@ const commentsController = {
         sender: req.userId,
         recepient,
         text,
+        ticket: id,
       });
 
       await comment.save();
+
+      req.app.get("io").emit("commented", comment);
 
       ticket.comments.push(comment._id);
       await ticket.save();
@@ -120,6 +123,8 @@ const commentsController = {
       comment.text = text;
 
       await comment.save();
+
+      req.app.get("io").emit("updated comment", comment);
       return res.json({ message: "Comment updated" });
     } catch (error) {
       console.error(error);
@@ -137,6 +142,8 @@ const commentsController = {
       }
 
       await comment.deleteOne();
+
+      req.app.get("io").emit("deleted comment", comment._id);
       return res.json({ message: "Comment deleted" });
     } catch (error) {
       console.error(error);
