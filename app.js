@@ -20,9 +20,16 @@ const adminRouter = require("./routes/admin.route");
 // Creating an express application
 const app = express();
 
+// app.use(
+//   cors({
+//     origin: "https://quick-fix-tickets.netlify.app",
+//     credentials: true,
+//   })
+// );
+
 app.use(
   cors({
-    origin: "https://quick-fix-tickets.netlify.app",
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );

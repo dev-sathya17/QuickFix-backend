@@ -362,10 +362,16 @@ const userController = {
   googleSignIn: async (req, res, next) => {
     try {
       const user = await User.findOne({ email: req.body.email });
-      console.log(user);
       if (user) {
         const token = jwt.sign({ id: user._id }, SECRET_KEY);
         const { password: pass, ...data } = user._doc;
+        res.cookie("role", user.role, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+          expires: new Date(Date.now() + 24 * 3600000), // 24 hours from login
+          path: "/",
+        });
         res
           .cookie("token", token, {
             httpOnly: true,
@@ -378,18 +384,25 @@ const userController = {
           .json(data);
       } else {
         const generatedPassword = Math.random().toString(36).slice(-8);
-        const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
+        const hashedPassword = bcrypt.hashSync(generatedPassword, 10);
         const newUser = new User({
-          username:
-            req.body.name.split(" ").join("").toLowerCase() +
-            Math.random().toString(36).slice(-4),
+          name: req.body.name,
           email: req.body.email,
           password: hashedPassword,
-          avatar: req.body.photo,
+          image: req.body.photo,
+          mobile: "",
+          role: "user",
         });
         await newUser.save();
         const token = jwt.sign({ id: newUser._id }, SECRET_KEY);
         const { password: pass, ...data } = newUser._doc;
+        res.cookie("role", newUser.role, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+          expires: new Date(Date.now() + 24 * 3600000), // 24 hours from login
+          path: "/",
+        });
         res
           .cookie("token", token, {
             httpOnly: true,
