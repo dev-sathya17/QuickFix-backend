@@ -22,11 +22,15 @@ const assignEmployeeToTicket = async () => {
 
     const employeeIds = employees.map((employee) => employee._id);
 
-    assignedTickets.forEach(async (ticket, index) => {
-      if (!employeeIds.includes(ticket.assignedTo)) {
-        unassignedEmployees.push(employees[index]);
-      }
-    });
+    if (assignedTickets.length === 0) {
+      unassignedEmployees = [...employeeIds];
+    } else {
+      assignedTickets.forEach(async (ticket, index) => {
+        if (!employeeIds.includes(ticket.assignedTo)) {
+          unassignedEmployees.push(employees[index]);
+        }
+      });
+    }
 
     if (unassignedEmployees.length === 0) {
       console.log("All employees are already assigned to open tickets.");

@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt");
 // Importing the User model
 const User = require("../models/user");
 
+const Ticket = require("../models/ticket");
+
 // Importing helper function to send email
 const sendEmail = require("../helpers/emailHelper");
 
@@ -669,6 +671,11 @@ const userController = {
       if (user.image && user.image !== "uploads/avatar.png") {
         fs.unlinkSync(path.join(__dirname, "..", user.image));
       }
+
+      user.tickets.forEach(async (ticket) => {
+        await Ticket.findByIdAndDelete(ticket._id);
+      });
+
       const currentUser = await User.findById(req.userId);
 
       if (currentUser.role !== "admin") {
