@@ -17,7 +17,7 @@ Quick Fix is a ticket management system that handles ticket creation, real-time 
 ### 2. **Ticket Management**
 
 - Users can raise support tickets, which are categorized by predefined categories.
-- Employees are assigned to tickets either manually by the admin or automatically via a cron job.
+- Employees are assigned to tickets either manually by the admin or automatically.
 - Tickets have various statuses (e.g., open, assigned, closed).
 
 ### 3. **Real-Time Chat**
