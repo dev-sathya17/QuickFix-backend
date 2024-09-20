@@ -33,9 +33,6 @@ app.use(cookieParser());
 // Adding middleware to parse the request body
 app.use(express.json());
 
-// Adding a job to assign Employees to tickets
-require("./jobs/AssignmentJob");
-
 // to log requests
 app.use(morgan("dev"));
 
