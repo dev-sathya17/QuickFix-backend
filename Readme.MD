@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Quick Fix is a ticket management system that handles ticket creation, real-time chat between users and employees, and ticket resolution. The backend is built using Node.js, Express, MongoDB, and Socket.io. The admin manages users, employees, and categories, and can assign tickets either manually or through a cron job.
+Quick Fix is a ticket management system that handles ticket creation, real-time chat between users and employees, and ticket resolution. The backend is built using Node.js, Express, MongoDB, and Socket.io. The admin manages users, employees, and categories, and can assign tickets either manually.
 
 ---
 
