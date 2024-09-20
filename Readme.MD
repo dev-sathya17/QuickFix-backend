@@ -10,7 +10,7 @@ Quick Fix is a ticket management system that handles ticket creation, real-time 
 
 ### 1. **User Authentication and Authorization**
 
-- Users can sign in via Google OAuth (implemented with Passport.js).
+- Users can sign in via Google OAuth.
 - Roles: Admin, Employee, and User. Each role has specific privileges.
 - JSON Web Tokens (JWT) are used for user authentication.
 
