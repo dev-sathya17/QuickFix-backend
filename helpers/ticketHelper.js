@@ -23,7 +23,7 @@ const assignEmployeeToTicket = async () => {
     const employeeIds = employees.map((employee) => employee._id);
 
     if (assignedTickets.length === 0) {
-      unassignedEmployees = [...employeeIds];
+      unassignedEmployees.push([...employeeIds]);
     } else {
       assignedTickets.forEach(async (ticket, index) => {
         if (!employeeIds.includes(ticket.assignedTo)) {
